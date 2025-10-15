@@ -5,12 +5,14 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Welcome to My React Project</h1>
+        <h1>Welcome to Jiang Peng's React Project</h1>
         <nav>
           <ul>
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#projects">Projects</a></li>
+            {/* 添加 GitHub 链接 */}
+            <li><a href="https://www.github.com/jiangpeng823205" target="_blank" rel="noopener noreferrer">GitHub</a></li>
           </ul>
         </nav>
       </header>
@@ -30,11 +32,21 @@ function App() {
       {/* Projects Section */}
       <section id="projects">
         <h2>My Projects</h2>
-        <ul>
-          <li>Project 1: Todo App</li>
-          <li>Project 2: Portfolio Website</li>
-          <li>Project 3: E-commerce Site</li>
-        </ul>
+        <div className="project-tile">
+          <h3>Project 1</h3>
+          <p>A brief description of the project.</p>
+          <a href="https://github.com/your-github-profile/project1" target="_blank" rel="noopener noreferrer">View Project</a>
+        </div>
+        <div className="project-tile">
+          <h3>Project 2</h3>
+          <p>A brief description of the project.</p>
+          <a href="https://github.com/your-github-profile/project2" target="_blank" rel="noopener noreferrer">View Project</a>
+        </div>
+        <div className="project-tile">
+          <h3>Project 3</h3>
+          <p>A brief description of the project.</p>
+          <a href="https://github.com/your-github-profile/project3" target="_blank" rel="noopener noreferrer">View Project</a>
+        </div>
       </section>
 
       {/* Footer */}

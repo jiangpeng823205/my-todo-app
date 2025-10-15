@@ -29,6 +29,40 @@ section {
   padding: 20px;
 }
 
+.project-tile {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-tile h3 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #333;
+}
+
+.project-tile p {
+  font-size: 1em;
+  color: #666;
+  margin: 10px 0;
+}
+
+.project-tile a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.project-tile a:hover {
+  text-decoration: underline;
+}
+
 footer {
   background-color: #282c34;
   color: white;
