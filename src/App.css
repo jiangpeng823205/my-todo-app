@@ -1,3 +1,4 @@
+/* 通用样式 */
 .App {
   text-align: center;
   font-family: Arial, sans-serif;
@@ -29,37 +30,57 @@ section {
   padding: 20px;
 }
 
-.todo-list {
+/* 项目列表 */
+.projects-list {
+  display: flex;
+  flex-wrap: wrap; /* 允许换行 */
+  justify-content: space-between; /* 在行内分配项目间距 */
+  gap: 20px; /* 项目之间的间距 */
+}
+
+.project-tile {
   background-color: #f4f4f4;
   border-radius: 8px;
   padding: 20px;
-  margin: 20px 0;
-  width: 80%;
-  max-width: 600px;
+  width: 45%; /* 每个项目占据宽度的一半，保证每行有两个项目 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* 给项目卡片底部加间距 */
 }
 
-.todo-list input, .todo-list textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+.project-tile h3 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #333;
 }
 
-.todo-list button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.project-tile p {
+  font-size: 1em;
+  color: #666;
+  margin: 10px 0;
 }
 
-.todo-list button:hover {
-  background-color: #45a049;
+.project-tile a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  margin-top: 10px;
+  display: inline-block;
 }
 
-/* 背景和按钮 */
+.project-tile a:hover {
+  text-decoration: underline;
+}
+
+/* 项目部分的标题和按钮 */
+.projects-header {
+  display: flex;
+  flex-direction: column; /* 设置为列布局，使标题和按钮垂直排列 */
+  align-items: center; /* 将标题和按钮水平居中 */
+  margin-bottom: 20px;
+}
+
+
+/* Add Project 按钮 */
 .add-project-btn {
   padding: 10px 20px;
   background-color: #4CAF50;
@@ -67,10 +88,40 @@ section {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-left: 20px; /* 确保按钮与标题之间有间距 */
 }
 
 .add-project-btn:hover {
   background-color: #45a049;
+}
+
+/* 编辑按钮样式 */
+.edit-project-btn {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.edit-project-btn:hover {
+  background-color: #0056b3;
+}
+
+/* 删除按钮样式 */
+.delete-project-btn {
+  padding: 5px 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-project-btn:hover {
+  background-color: #e53935;
 }
 
 /* Modal 样式 */
@@ -123,46 +174,7 @@ section {
   background-color: #e53935;
 }
 
-.projects-list {
-  display: flex;
-  flex-wrap: wrap; /* 允许换行 */
-  justify-content: space-between; /* 在行内分配项目间距 */
-  gap: 20px; /* 项目之间的间距 */
-}
-
-.project-tile {
-  background-color: #f4f4f4;
-  border-radius: 8px;
-  padding: 20px;
-  width: 48%; /* 每个项目占据宽度的一半，保证每行有两个项目 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-
-.project-tile h3 {
-  margin: 0;
-  font-size: 1.5em;
-  color: #333;
-}
-
-.project-tile p {
-  font-size: 1em;
-  color: #666;
-  margin: 10px 0;
-}
-
-.project-tile a {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
-  margin-top: 10px;
-  display: inline-block;
-}
-
-.project-tile a:hover {
-  text-decoration: underline;
-}
-
+/* Footer 样式 */
 footer {
   background-color: #282c34;
   color: white;
@@ -171,4 +183,12 @@ footer {
   width: 100%;
   bottom: 0;
   text-align: center;
+}
+
+/* 项目卡片布局 */
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
