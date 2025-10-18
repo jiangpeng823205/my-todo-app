@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Modal from 'react-modal'; // 导入 react-modal
+import axios from 'axios'; // 导入 Axios
 
 Modal.setAppElement('#root'); // 设置 Modal 的 root 元素
 
@@ -11,6 +12,17 @@ function App() {
   const [projectDescription, setProjectDescription] = useState('');
   const [projectLink, setProjectLink] = useState('');
   const [editingIndex, setEditingIndex] = useState(null); // 用来追踪编辑哪个项目
+
+  // 获取所有项目
+  useEffect(() => {
+    axios.get('http://localhost:5001/projects')
+      .then(response => {
+        setProjects(response.data); // 从后端获取数据
+      })
+      .catch(err => {
+        console.error('Error fetching projects:', err);
+      });
+  }, []);
 
   // 打开模态框
   const openModal = (index = null) => {
@@ -36,28 +48,54 @@ function App() {
 
   // 添加或更新项目
   const handleAddOrUpdateProject = () => {
-    if (projectName && projectDescription && projectLink) {
-      if (editingIndex === null) {
-        // 添加新项目
-        setProjects([...projects, { name: projectName, description: projectDescription, link: projectLink }]);
-      } else {
-        // 更新现有项目
-        const updatedProjects = [...projects];
-        updatedProjects[editingIndex] = { name: projectName, description: projectDescription, link: projectLink };
-        setProjects(updatedProjects);
-      }
+  if (projectName && projectDescription && projectLink) {
+    const newProject = { name: projectName, description: projectDescription, link: projectLink };
 
-      setProjectName('');
-      setProjectDescription('');
-      setProjectLink('');
-      closeModal();
+    if (editingIndex === null) {
+      // 添加新项目
+      axios.post('http://localhost:5001/projects', newProject)
+        .then(response => {
+          console.log('Project added:', response.data); // 检查返回的数据
+          setProjects([...projects, response.data]); // 更新项目列表
+        })
+        .catch(err => {
+          console.error('Error adding project:', err);
+        });
+    } else {
+      // 更新现有项目
+      const projectId = projects[editingIndex]._id;
+      const updatedProject = { ...projects[editingIndex], ...newProject };
+
+      axios.put(`http://localhost:5001/projects/${projects[editingIndex]._id}`, updatedProject)
+        .then(response => {
+          const updatedProjects = [...projects];
+          updatedProjects[editingIndex] = response.data;
+          setProjects(updatedProjects);
+        })
+        .catch(err => {
+          console.error('Error updating project:', err);
+        });
     }
-  };
+
+    setProjectName('');
+    setProjectDescription('');
+    setProjectLink('');
+    closeModal();
+  }
+};
+
 
   // 删除项目
   const handleDeleteProject = (index) => {
-    const updatedProjects = projects.filter((_, i) => i !== index);
-    setProjects(updatedProjects);
+    const projectId = projects[index]._id;
+
+    axios.delete(`http://localhost:5001/projects/${projectId}`)
+      .then(() => {
+        setProjects(projects.filter((_, i) => i !== index)); // 删除项目
+      })
+      .catch(err => {
+        console.error('Error deleting project:', err);
+      });
   };
 
   return (
