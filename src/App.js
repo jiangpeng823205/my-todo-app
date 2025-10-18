@@ -66,7 +66,7 @@ function App() {
       const projectId = projects[editingIndex]._id;
       const updatedProject = { ...projects[editingIndex], ...newProject };
 
-      axios.put(`http://localhost:5001/projects/${projects[editingIndex]._id}`, updatedProject)
+      axios.put(`http://localhost:5001/projects/${projectId}`, updatedProject)
         .then(response => {
           const updatedProjects = [...projects];
           updatedProjects[editingIndex] = response.data;
