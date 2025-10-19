@@ -17,7 +17,13 @@ function App() {
   const isProduction = window.location.hostname !== 'localhost' && 
                        window.location.hostname !== '127.0.0.1';
 
-  // 硬编码的示例项目
+  
+
+  // 获取所有项目
+  useEffect(() => {
+    console.log('Current environment:', isProduction ? 'Production' : 'Development');
+    
+    // 硬编码的示例项目
   const exampleProjects = [
     {
       _id: '1',
@@ -43,10 +49,6 @@ function App() {
     }
   ];
 
-  // 获取所有项目
-  useEffect(() => {
-    console.log('Current environment:', isProduction ? 'Production' : 'Development');
-    
     if (isProduction) {
       // 生产环境：直接使用示例项目
       console.log('Setting example projects');
