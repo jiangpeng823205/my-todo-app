@@ -57,6 +57,9 @@ section {
   font-size: 1em;
   color: #666;
   margin: 10px 0;
+  white-space: pre-line;
+  line-height: 1.5;
+  text-align: left;
 }
 
 .project-tile a {
