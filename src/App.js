@@ -34,9 +34,7 @@ function App() {
     {
       _id: '3',
       name: 'JP_my-todo-app',
-      description: `This is my personal portfolio website that showcases my full-stack development skills. 
-
-This full-stack project is built with the MERN stack:
+      description: `This full-stack project is built with the MERN stack:
 - Frontend: React with Hooks, Axios for API calls
 - Backend: Node.js, Express, MongoDB with Mongoose
 - Features: RESTful APIs, responsive design, CRUD operations
