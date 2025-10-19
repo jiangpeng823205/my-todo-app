@@ -1,75 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Modal from 'react-modal'; // 导入 react-modal
-import axios from 'axios'; // 导入 Axios
+import Modal from 'react-modal';
+import axios from 'axios';
 
-Modal.setAppElement('#root'); // 设置 Modal 的 root 元素
+Modal.setAppElement('#root');
 
 function App() {
-  const [projects, setProjects] = useState([]); // 初始为空项目列表
+  const [projects, setProjects] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
   const [projectLink, setProjectLink] = useState('');
-  const [editingIndex, setEditingIndex] = useState(null); // 用来追踪编辑哪个项目
+  const [editingIndex, setEditingIndex] = useState(null);
 
-  // 检查是否在生产环境
-  const isProduction = !window.location.href.includes('localhost');
+  // 修复：添加 isProduction 定义
+  const isProduction = window.location.hostname !== 'localhost' && 
+                       window.location.hostname !== '127.0.0.1';
+
+  // 硬编码的示例项目
+  const exampleProjects = [
+    {
+      _id: '1',
+      name: 'JP_LinkedIn',
+      description: 'This is my LinkedIn account, which contains all my personal information. By clicking on the link, you will come to kown me more.',
+      link: 'https://www.linkedin.com/in/jiangpeng823205'
+    },
+    {
+      _id: '2', 
+      name: 'JP_GitHub',
+      description: 'This is my GitHub account, which contains most of my projects. By clicking on the link, you could visit my GitHub.',
+      link: 'https://github.com/jiangpeng823205'
+    },
+    {
+      _id: '3',
+      name: 'JP_my-todo-app',
+      description: `This is my personal portfolio website that showcases my full-stack development skills. 
+
+This full-stack project is built with the MERN stack:
+- Frontend: React with Hooks, Axios for API calls
+- Backend: Node.js, Express, MongoDB with Mongoose
+- Features: RESTful APIs, responsive design, CRUD operations
+- Deployment: Netlify for frontend, local development setup`,
+      link: 'https://jiangpeng823205.netlify.app/'
+    }
+  ];
 
   // 获取所有项目
   useEffect(() => {
+    console.log('Current environment:', isProduction ? 'Production' : 'Development');
+    
     if (isProduction) {
-      // 生产环境：使用硬编码的示例项目
-      const exampleProjects = [
-        {
-          _id: '1',
-          name: 'JP_LinkedIn',
-          description: 'This is my LinkedIn account, which contains all my personal information. By clicking on the link, you will come to kown me more.',
-          link: 'https://www.linkedin.com/in/jiangpeng823205'
-        },
-        {
-          _id: '2', 
-          name: 'JP_GitHub',
-          description: 'This is my GitHub account, which contains most of my projects. By clicking on the link, you could visit my GitHub.',
-          link: 'https://github.com/jiangpeng823205'
-        },
-        {
-          _id: '3',
-          name: 'JP_my-todo-app',
-          description: 'This is my website I built myself, which could express my code ability and make others know me. ',
-          link: 'https://jiangpeng823205.netlify.app/'
-        }
-      ];
+      // 生产环境：直接使用示例项目
+      console.log('Setting example projects');
       setProjects(exampleProjects);
     } else {
-      // 开发环境：使用真实 API
+      // 开发环境：尝试使用 API，失败时使用示例数据
       axios.get('http://localhost:5001/projects')
         .then(response => {
-          setProjects(response.data); // 从后端获取数据
+          console.log('API response received:', response.data);
+          setProjects(response.data);
         })
         .catch(err => {
-          console.error('Error fetching projects:', err);
-          // 如果 API 失败，也使用示例数据
-          const exampleProjects = [
-            {
-              _id: '1',
-              name: 'JP_LinkedIn',
-              description: 'This is my LinkedIn account, which contains all my personal information. By clicking on the link, you will come to kown me more.',
-              link: 'https://www.linkedin.com/in/jiangpeng823205'
-            },
-            {
-              _id: '2', 
-              name: 'JP_GitHub',
-              description: 'This is my GitHub account, which contains most of my projects. By clicking on the link, you could visit my GitHub.',
-              link: 'https://github.com/jiangpeng823205'
-            },
-            {
-              _id: '3',
-              name: 'JP_my-todo-app',
-              description: 'This is my website I built myself, which could express my code ability and make others know me. ',
-              link: 'https://jiangpeng823205.netlify.app/'
-            }
-          ];
+          console.error('API failed, using example projects:', err);
           setProjects(exampleProjects);
         });
     }
@@ -88,12 +80,12 @@ function App() {
       setProjectName(project.name);
       setProjectDescription(project.description);
       setProjectLink(project.link);
-      setEditingIndex(index); // 记录正在编辑的项目
+      setEditingIndex(index);
     } else {
       setProjectName('');
       setProjectDescription('');
       setProjectLink('');
-      setEditingIndex(null); // 如果是新添加项目，清空编辑状态
+      setEditingIndex(null);
     }
   };
 
@@ -114,17 +106,14 @@ function App() {
       const newProject = { name: projectName, description: projectDescription, link: projectLink };
 
       if (editingIndex === null) {
-        // 添加新项目
         axios.post('http://localhost:5001/projects', newProject)
           .then(response => {
-            console.log('Project added:', response.data); // 检查返回的数据
-            setProjects([...projects, response.data]); // 更新项目列表
+            setProjects([...projects, response.data]);
           })
           .catch(err => {
             console.error('Error adding project:', err);
           });
       } else {
-        // 更新现有项目
         const projectId = projects[editingIndex]._id;
         const updatedProject = { ...projects[editingIndex], ...newProject };
 
@@ -154,10 +143,9 @@ function App() {
     }
 
     const projectId = projects[index]._id;
-
     axios.delete(`http://localhost:5001/projects/${projectId}`)
       .then(() => {
-        setProjects(projects.filter((_, i) => i !== index)); // 删除项目
+        setProjects(projects.filter((_, i) => i !== index));
       })
       .catch(err => {
         console.error('Error deleting project:', err);
@@ -177,19 +165,16 @@ function App() {
         </nav>
       </header>
 
-      {/* Home Section */}
       <section id="home">
         <h2>Home</h2>
         <p>This is my React project, where I showcase my skills and projects.</p>
       </section>
 
-      {/* About Section */}
       <section id="about">
         <h2>About Me</h2>
         <p>I'm a passionate web developer, focusing on React, JavaScript, and web design.</p>
       </section>
 
-      {/* Projects Section */}
       <section id="projects">
         <div className="projects-header">
           <h2>My Projects</h2>
@@ -201,28 +186,36 @@ function App() {
         </div>
 
         <div className="projects-list">
-          {projects.map((project, index) => (
-            <div className="project-tile" key={project._id || index}>
-              <h3>{project.name}</h3>
-              <p>{project.description}</p>
-              <a href={project.link} target="_blank" rel="noopener noreferrer">View Project</a>
-              {!isProduction && (
-                <div>
-                  <button className="edit-project-btn" onClick={() => openModal(index)}>Edit</button>
-                  <button className="delete-project-btn" onClick={() => handleDeleteProject(index)}>Delete</button>
-                </div>
-              )}
-            </div>
-          ))}
+          {projects.length > 0 ? (
+            projects.map((project, index) => (
+              <div className="project-tile" key={project._id || index}>
+                <h3>{project.name}</h3>
+                <p>{project.description}</p>
+                <a href={project.link} target="_blank" rel="noopener noreferrer">
+                  View Project
+                </a>
+                {!isProduction && (
+                  <div>
+                    <button className="edit-project-btn" onClick={() => openModal(index)}>
+                      Edit
+                    </button>
+                    <button className="delete-project-btn" onClick={() => handleDeleteProject(index)}>
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <p>No projects to display</p>
+          )}
         </div>
       </section>
 
-      {/* Footer */}
       <footer>
         <p>&copy; 2025 My React Portfolio</p>
       </footer>
 
-      {/* Modal 弹出框 - 只在开发环境显示 */}
       {!isProduction && (
         <Modal
           isOpen={isModalOpen}
