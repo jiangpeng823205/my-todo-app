@@ -13,19 +13,75 @@ function App() {
   const [projectLink, setProjectLink] = useState('');
   const [editingIndex, setEditingIndex] = useState(null); // 用来追踪编辑哪个项目
 
+  // 检查是否在生产环境
+  const isProduction = !window.location.href.includes('localhost');
+
   // 获取所有项目
   useEffect(() => {
-    axios.get('http://localhost:5001/projects')
-      .then(response => {
-        setProjects(response.data); // 从后端获取数据
-      })
-      .catch(err => {
-        console.error('Error fetching projects:', err);
-      });
-  }, []);
+    if (isProduction) {
+      // 生产环境：使用硬编码的示例项目
+      const exampleProjects = [
+        {
+          _id: '1',
+          name: 'JP_LinkedIn',
+          description: 'This is my LinkedIn account, which contains all my personal information. By clicking on the link, you will come to kown me more.',
+          link: 'https://www.linkedin.com/in/jiangpeng823205'
+        },
+        {
+          _id: '2', 
+          name: 'JP_GitHub',
+          description: 'This is my GitHub account, which contains most of my projects. By clicking on the link, you could visit my GitHub.',
+          link: 'https://github.com/jiangpeng823205'
+        },
+        {
+          _id: '3',
+          name: 'JP_my-todo-app',
+          description: 'This is my website I built myself, which could express my code ability and make others know me. ',
+          link: 'https://jiangpeng823205.netlify.app/'
+        }
+      ];
+      setProjects(exampleProjects);
+    } else {
+      // 开发环境：使用真实 API
+      axios.get('http://localhost:5001/projects')
+        .then(response => {
+          setProjects(response.data); // 从后端获取数据
+        })
+        .catch(err => {
+          console.error('Error fetching projects:', err);
+          // 如果 API 失败，也使用示例数据
+          const exampleProjects = [
+            {
+              _id: '1',
+              name: 'JP_LinkedIn',
+              description: 'This is my LinkedIn account, which contains all my personal information. By clicking on the link, you will come to kown me more.',
+              link: 'https://www.linkedin.com/in/jiangpeng823205'
+            },
+            {
+              _id: '2', 
+              name: 'JP_GitHub',
+              description: 'This is my GitHub account, which contains most of my projects. By clicking on the link, you could visit my GitHub.',
+              link: 'https://github.com/jiangpeng823205'
+            },
+            {
+              _id: '3',
+              name: 'JP_my-todo-app',
+              description: 'This is my website I built myself, which could express my code ability and make others know me. ',
+              link: 'https://jiangpeng823205.netlify.app/'
+            }
+          ];
+          setProjects(exampleProjects);
+        });
+    }
+  }, [isProduction]);
 
   // 打开模态框
   const openModal = (index = null) => {
+    if (isProduction) {
+      alert('项目编辑功能需要在本地开发环境中使用。');
+      return;
+    }
+    
     setIsModalOpen(true);
     if (index !== null) {
       const project = projects[index];
@@ -48,45 +104,55 @@ function App() {
 
   // 添加或更新项目
   const handleAddOrUpdateProject = () => {
-  if (projectName && projectDescription && projectLink) {
-    const newProject = { name: projectName, description: projectDescription, link: projectLink };
-
-    if (editingIndex === null) {
-      // 添加新项目
-      axios.post('http://localhost:5001/projects', newProject)
-        .then(response => {
-          console.log('Project added:', response.data); // 检查返回的数据
-          setProjects([...projects, response.data]); // 更新项目列表
-        })
-        .catch(err => {
-          console.error('Error adding project:', err);
-        });
-    } else {
-      // 更新现有项目
-      const projectId = projects[editingIndex]._id;
-      const updatedProject = { ...projects[editingIndex], ...newProject };
-
-      axios.put(`http://localhost:5001/projects/${projectId}`, updatedProject)
-        .then(response => {
-          const updatedProjects = [...projects];
-          updatedProjects[editingIndex] = response.data;
-          setProjects(updatedProjects);
-        })
-        .catch(err => {
-          console.error('Error updating project:', err);
-        });
+    if (isProduction) {
+      alert('添加项目功能需要在本地开发环境中使用。');
+      closeModal();
+      return;
     }
 
-    setProjectName('');
-    setProjectDescription('');
-    setProjectLink('');
-    closeModal();
-  }
-};
+    if (projectName && projectDescription && projectLink) {
+      const newProject = { name: projectName, description: projectDescription, link: projectLink };
 
+      if (editingIndex === null) {
+        // 添加新项目
+        axios.post('http://localhost:5001/projects', newProject)
+          .then(response => {
+            console.log('Project added:', response.data); // 检查返回的数据
+            setProjects([...projects, response.data]); // 更新项目列表
+          })
+          .catch(err => {
+            console.error('Error adding project:', err);
+          });
+      } else {
+        // 更新现有项目
+        const projectId = projects[editingIndex]._id;
+        const updatedProject = { ...projects[editingIndex], ...newProject };
+
+        axios.put(`http://localhost:5001/projects/${projectId}`, updatedProject)
+          .then(response => {
+            const updatedProjects = [...projects];
+            updatedProjects[editingIndex] = response.data;
+            setProjects(updatedProjects);
+          })
+          .catch(err => {
+            console.error('Error updating project:', err);
+          });
+      }
+
+      setProjectName('');
+      setProjectDescription('');
+      setProjectLink('');
+      closeModal();
+    }
+  };
 
   // 删除项目
   const handleDeleteProject = (index) => {
+    if (isProduction) {
+      alert('删除项目功能需要在本地开发环境中使用。');
+      return;
+    }
+
     const projectId = projects[index]._id;
 
     axios.delete(`http://localhost:5001/projects/${projectId}`)
@@ -127,21 +193,25 @@ function App() {
       <section id="projects">
         <div className="projects-header">
           <h2>My Projects</h2>
-          <button className="add-project-btn" onClick={() => openModal()}>
-            Add Project
-          </button>
+          {!isProduction && (
+            <button className="add-project-btn" onClick={() => openModal()}>
+              Add Project
+            </button>
+          )}
         </div>
 
         <div className="projects-list">
           {projects.map((project, index) => (
-            <div className="project-tile" key={index}>
+            <div className="project-tile" key={project._id || index}>
               <h3>{project.name}</h3>
               <p>{project.description}</p>
               <a href={project.link} target="_blank" rel="noopener noreferrer">View Project</a>
-              <div>
-                <button className="edit-project-btn" onClick={() => openModal(index)}>Edit</button>
-                <button className="delete-project-btn" onClick={() => handleDeleteProject(index)}>Delete</button>
-              </div>
+              {!isProduction && (
+                <div>
+                  <button className="edit-project-btn" onClick={() => openModal(index)}>Edit</button>
+                  <button className="delete-project-btn" onClick={() => handleDeleteProject(index)}>Delete</button>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -152,43 +222,45 @@ function App() {
         <p>&copy; 2025 My React Portfolio</p>
       </footer>
 
-      {/* Modal 弹出框 */}
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Add New Project"
-        className="modal-content"
-        overlayClassName="modal-overlay"
-      >
-        <h2>{editingIndex !== null ? 'Edit Project' : 'Add New Project'}</h2>
-        <div>
-          <input
-            type="text"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            placeholder="Project Name"
-          />
-        </div>
-        <div>
-          <textarea
-            value={projectDescription}
-            onChange={(e) => setProjectDescription(e.target.value)}
-            placeholder="Project Description"
-          ></textarea>
-        </div>
-        <div>
-          <input
-            type="text"
-            value={projectLink}
-            onChange={(e) => setProjectLink(e.target.value)}
-            placeholder="Project Link"
-          />
-        </div>
-        <button onClick={handleAddOrUpdateProject}>
-          {editingIndex !== null ? 'Update Project' : 'Add Project'}
-        </button>
-        <button onClick={closeModal}>Cancel</button>
-      </Modal>
+      {/* Modal 弹出框 - 只在开发环境显示 */}
+      {!isProduction && (
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          contentLabel="Add New Project"
+          className="modal-content"
+          overlayClassName="modal-overlay"
+        >
+          <h2>{editingIndex !== null ? 'Edit Project' : 'Add New Project'}</h2>
+          <div>
+            <input
+              type="text"
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              placeholder="Project Name"
+            />
+          </div>
+          <div>
+            <textarea
+              value={projectDescription}
+              onChange={(e) => setProjectDescription(e.target.value)}
+              placeholder="Project Description"
+            ></textarea>
+          </div>
+          <div>
+            <input
+              type="text"
+              value={projectLink}
+              onChange={(e) => setProjectLink(e.target.value)}
+              placeholder="Project Link"
+            />
+          </div>
+          <button onClick={handleAddOrUpdateProject}>
+            {editingIndex !== null ? 'Update Project' : 'Add Project'}
+          </button>
+          <button onClick={closeModal}>Cancel</button>
+        </Modal>
+      )}
     </div>
   );
 }
