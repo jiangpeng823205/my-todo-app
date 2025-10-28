@@ -29,7 +29,7 @@ function App() {
       _id: '1',
       name: 'JP_LinkedIn',
       description: 'This is my LinkedIn account, which contains all my personal information. By clicking on the link, you will come to kown me more.',
-      link: 'https://www.linkedin.com/in/jiangpeng823205'
+      link: 'https://www.linkedin.com/in/jiangpeng328'
     },
     {
       _id: '2', 
