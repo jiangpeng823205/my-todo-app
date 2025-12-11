@@ -167,7 +167,7 @@ function App() {
 
       <section id="home">
         <h2>Home</h2>
-        <p>This is my React project, where I showcase my skills and projects.</p>
+        <p>This is Jiang Peng's React project, where I showcase my skills and projects.</p>
       </section>
 
       <section id="about">
