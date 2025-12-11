@@ -1,197 +1,250 @@
-/* 通用样式 */
+/* 全局设置 */
+:root {
+  --primary-color: #2c3e50;
+  --accent-color: #3498db;
+  --bg-light: #f8f9fa;
+  --text-dark: #333;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text-dark);
+  background-color: #fff;
+  line-height: 1.6;
+}
+
 .App {
   text-align: center;
-  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
+/* Header */
 .App-header {
-  background-color: #282c34;
-  padding: 20px;
+  background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+  padding: 60px 20px;
   color: white;
 }
 
-nav ul {
-  list-style-type: none;
-  padding: 0;
+.App-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
 }
 
-nav li {
-  display: inline;
-  margin: 0 15px;
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-top: 10px;
 }
 
-nav a {
+.contact-info {
+  margin-top: 20px;
+}
+
+.contact-info a {
   color: white;
   text-decoration: none;
-  font-size: 18px;
+  margin: 0 10px;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s;
+}
+
+.contact-info a:hover {
+  border-bottom: 1px solid white;
+}
+
+/* Navigation */
+.sticky-nav {
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.sticky-nav ul {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+
+.sticky-nav li {
+  margin: 0;
+}
+
+.sticky-nav a {
+  display: block;
+  padding: 15px 20px;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.sticky-nav a:hover {
+  color: var(--accent-color);
+  background-color: #f0f0f0;
+}
+
+/* Container */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  flex: 1; /* Pushes footer down */
 }
 
 section {
-  padding: 20px;
+  margin-bottom: 60px;
+  text-align: left; /* 左对齐更适合阅读 */
 }
 
-/* 项目列表 */
+h2 {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 10px;
+  display: inline-block;
+  margin-bottom: 30px;
+}
+
+/* Content Card (About) */
+.content-card {
+  background: var(--bg-light);
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 5px solid var(--accent-color);
+}
+
+/* Skills Grid */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.skill-category {
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.skill-category h3 {
+  margin-top: 0;
+  color: var(--accent-color);
+}
+
+/* Experience Timeline */
+.timeline-item {
+  margin-bottom: 30px;
+  padding-left: 20px;
+  border-left: 2px solid #ddd;
+}
+
+.timeline-item h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.timeline-item .date {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+/* Projects */
 .projects-list {
   display: flex;
-  flex-wrap: wrap; /* 允许换行 */
-  justify-content: space-between; /* 在行内分配项目间距 */
-  gap: 20px; /* 项目之间的间距 */
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
 }
 
 .project-tile {
-  background-color: #f4f4f4;
+  background-color: white;
+  border: 1px solid #e1e1e1;
   border-radius: 8px;
-  padding: 20px;
-  width: 45%; /* 每个项目占据宽度的一半，保证每行有两个项目 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px; /* 给项目卡片底部加间距 */
+  padding: 25px;
+  width: calc(50% - 15px); /* Desktop: 2 per row */
+  box-sizing: border-box;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-tile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
 .project-tile h3 {
-  margin: 0;
-  font-size: 1.5em;
-  color: #333;
+  margin-top: 0;
 }
 
 .project-tile p {
-  font-size: 1em;
-  color: #666;
-  margin: 10px 0;
-  white-space: pre-line;
-  line-height: 1.5;
-  text-align: left;
+  flex-grow: 1; /* Make description take available space */
 }
 
-.project-tile a {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
-  margin-top: 10px;
+/* Tags */
+.tags {
+  margin: 15px 0;
+}
+
+.tag {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  margin-right: 8px;
   display: inline-block;
 }
 
-.project-tile a:hover {
-  text-decoration: underline;
-}
-
-/* 项目部分的标题和按钮 */
-.projects-header {
-  display: flex;
-  flex-direction: column; /* 设置为列布局，使标题和按钮垂直排列 */
-  align-items: center; /* 将标题和按钮水平居中 */
-  margin-bottom: 20px;
-}
-
-
-/* Add Project 按钮 */
-.add-project-btn {
+.view-btn {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: white;
   padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
   border-radius: 5px;
-  cursor: pointer;
-  margin-left: 20px; /* 确保按钮与标题之间有间距 */
-}
-
-.add-project-btn:hover {
-  background-color: #45a049;
-}
-
-/* 编辑按钮样式 */
-.edit-project-btn {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.edit-project-btn:hover {
-  background-color: #0056b3;
-}
-
-/* 删除按钮样式 */
-.delete-project-btn {
-  padding: 5px 10px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.delete-project-btn:hover {
-  background-color: #e53935;
-}
-
-/* Modal 样式 */
-.modal-content {
-  position: relative;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  margin: 50px auto;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content input,
-.modal-content textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.modal-content button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.modal-content button:hover {
-  background-color: #45a049;
-}
-
-.modal-content button + button {
-  background-color: #f44336;
-  margin-left: 10px;
-}
-
-.modal-content button + button:hover {
-  background-color: #e53935;
-}
-
-/* Footer 样式 */
-footer {
-  background-color: #282c34;
-  color: white;
-  padding: 10px;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
+  text-decoration: none;
+  font-weight: bold;
   text-align: center;
 }
 
-/* 项目卡片布局 */
-.projects-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+.view-btn:hover {
+  background-color: #2980b9;
+  text-decoration: none;
+}
+
+/* Footer */
+footer {
+  background-color: #2c3e50;
+  color: rgba(255,255,255,0.7);
+  padding: 20px;
+  margin-top: auto; /* Ensures footer stays at bottom */
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .project-tile {
+    width: 100%; /* Mobile: 1 per row */
+  }
+
+  .sticky-nav ul {
+    flex-wrap: wrap;
+  }
+  
+  .sticky-nav a {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
 }
