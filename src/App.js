@@ -1,34 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Modal from 'react-modal';
 import axios from 'axios';
 
-// 确保图标库等已安装，或者这里我们尽量用纯文字/Emoji代替以减少依赖
-// 建议安装: npm install react-icons (可选，这里先用纯CSS)
-
-Modal.setAppElement('#root');
+// 移除了 Modal 和未使用的 Admin 变量，保持代码整洁
+// 如果需要图标，可以安装 react-icons，这里暂时只用纯文字
 
 function App() {
   const [projects, setProjects] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  // Admin states
-  const [projectName, setProjectName] = useState('');
-  const [projectDescription, setProjectDescription] = useState('');
-  const [projectLink, setProjectLink] = useState('');
-  const [editingIndex, setEditingIndex] = useState(null);
-
+  
+  // 生产环境判断
   const isProduction = window.location.hostname !== 'localhost' && 
                        window.location.hostname !== '127.0.0.1';
 
   useEffect(() => {
-    // 简历中的亮点项目数据
-    // 注意：我们将 BioBERT 和 Knowledge Graph 也作为项目展示，这在新加坡找 AI/Data 工作很重要
+    // 简历中的亮点项目数据 (Hardcoded for Production)
     const resumeProjects = [
       {
         _id: 'p1',
         name: 'Biomedical Knowledge Graph System',
         description: 'Built a scalable pipeline processing 50,000+ medical records using Neo4j. Developed data cleaning and annotation workflows for clinical literature.',
-        link: 'https://github.com/jiangpeng823205', // 建议链接到具体 repo
+        link: 'https://github.com/jiangpeng823205', 
         tags: ['Neo4j', 'Python', 'Data Engineering']
       },
       {
@@ -47,12 +38,13 @@ function App() {
       }
     ];
 
+    // 在生产环境直接使用静态数据，保证速度和稳定性
     if (isProduction) {
       setProjects(resumeProjects);
     } else {
+      // 在本地开发环境尝试连接后端
       axios.get('http://localhost:5001/projects')
         .then(response => {
-          // 如果数据库是空的，或者为了测试方便，也可以合并显示
           if(response.data.length === 0) {
              setProjects(resumeProjects);
           } else {
@@ -60,18 +52,11 @@ function App() {
           }
         })
         .catch(err => {
-          console.error('API failed, using resume projects:', err);
+          console.log('Backend not connected, using static data.');
           setProjects(resumeProjects);
         });
     }
   }, [isProduction]);
-
-  // ... (保留 openModal, closeModal, handleAddOrUpdateProject, handleDeleteProject 逻辑不变)
-  // 为了节省篇幅，这里假设你保留了原有的 Admin 函数逻辑
-  const openModal = (index = null) => { setIsModalOpen(true); /* ...你的逻辑 */ };
-  const closeModal = () => { setIsModalOpen(false); };
-  const handleAddOrUpdateProject = () => { /* ...你的逻辑 */ closeModal(); };
-  const handleDeleteProject = (index) => { /* ...你的逻辑 */ };
 
   return (
     <div className="App">
@@ -152,9 +137,6 @@ function App() {
         <section id="projects">
           <div className="projects-header">
             <h2>Featured Projects</h2>
-            {!isProduction && (
-              <button className="add-project-btn" onClick={() => openModal()}>+ Add (Dev Only)</button>
-            )}
           </div>
 
           <div className="projects-list">
@@ -171,11 +153,6 @@ function App() {
                   <a href={project.link} target="_blank" rel="noopener noreferrer" className="view-btn">
                     View Project / Code
                   </a>
-                  {!isProduction && (
-                    <div className="admin-controls">
-                       {/* 你的编辑/删除按钮逻辑 */}
-                    </div>
-                  )}
                 </div>
               </div>
             ))}
@@ -186,14 +163,6 @@ function App() {
       <footer>
         <p>&copy; 2025 Peng Jiang. Built with React & Node.js.</p>
       </footer>
-      
-      {/* Modal 逻辑保持不变 */}
-      {!isProduction && (
-        <Modal isOpen={isModalOpen} onRequestClose={closeModal} className="modal-content" overlayClassName="modal-overlay">
-           {/* ...你的 Modal 内容 ... */}
-           <button onClick={closeModal}>Close</button>
-        </Modal>
-      )}
     </div>
   );
 }
