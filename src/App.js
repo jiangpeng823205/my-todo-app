@@ -115,8 +115,8 @@ function App() {
            <h2>Experience</h2>
            <div className="timeline">
               <div className="timeline-item">
-                <h3>Research Assistant</h3>
-                <span className="date">Anhui Medical University | Jul 2025 – Present</span>
+                <h3>Backend Engineer cum Research Assistant</h3>
+                <span className="date">Anhui Medical University | Jul 2025 – Mar 2026</span>
                 <ul>
                   <li>Built biomedical knowledge graphs using Neo4j.</li>
                   <li>Developed cleaning pipelines for 50,000+ medical records.</li>
@@ -128,7 +128,9 @@ function App() {
                 <span className="date">AHMU | Sep 2024 – Jun 2025</span>
                 <ul>
                   <li>Improved BioBERT baseline by 15% via relation extraction models.</li>
-                  <li>Built preprocessing pipelines with Pandas/NumPy.</li>
+                  <li>Developed Hospital Appointment System</li>
+                  <li>Built Full-Stack Portfolio Website</li>
+                  <li>Deployed Academic Management System</li>
                 </ul>
               </div>
            </div>
