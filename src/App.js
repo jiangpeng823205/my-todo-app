@@ -35,6 +35,13 @@ function App() {
         description: 'A responsive web application featuring RESTful APIs and CRUD operations. \nFrontend: React (Hooks), Axios.\nBackend: Node.js, Express, MongoDB.',
         link: 'https://jiangpeng823205.netlify.app/',
         tags: ['React', 'Node.js', 'MongoDB']
+      },
+      {
+        _id: 'p4',
+        name: 'Hospital Appointment System',
+        description: 'A responsive full-stack web application featuring RESTful APIs, CRUD operations, and system control logic for scheduling, conflict handling, and automated appointment allocation.',
+        link: 'https://github.com/jiangpeng823205/',
+        tags: ['Python', 'Backend', 'MySQL']
       }
     ];
 
@@ -74,7 +81,7 @@ function App() {
 
       <nav className="sticky-nav">
         <ul>
-          <li><a href="#about">About</a></li>
+          <li><a href="#about">About Me</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#projects">Projects</a></li>
           <li><a href="#experience">Experience</a></li>
@@ -102,7 +109,7 @@ function App() {
             </div>
             <div className="skill-category">
               <h3>Full Stack</h3>
-              <p>React (Hooks), Node.js, Express, MongoDB, MySQL</p>
+              <p>React, Node.js, Express, MongoDB, MySQL, Testing, Troubleshooting</p>
             </div>
             <div className="skill-category">
               <h3>Tools</h3>
@@ -124,7 +131,7 @@ function App() {
                 </ul>
               </div>
               <div className="timeline-item">
-                <h3>Research Intern (NLP)</h3>
+                <h3>Research Intern</h3>
                 <span className="date">AHMU | Sep 2024 – Jun 2025</span>
                 <ul>
                   <li>Improved BioBERT baseline by 15% via relation extraction models.</li>
